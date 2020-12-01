@@ -65,7 +65,39 @@
  * @return {Object[]}
  */
 function transformStateWithClones(state, transforms) {
-  // write code here
+  // копіюємо обєкт state щоб не змінювати його а юзати копію
+  const arrayOfStates = [];
+  const clonedState = { ...state };// додаємо обєкт state в масив
+  // тепер перебираємо умови і даємо їм функції
+
+  for (const obj of transforms) {
+    const operation = obj.operation;
+
+    if (operation === 'addProperties') { // при умові додати  додаємо
+    // пропертіс в обєкт масиву
+      Object.assign(clonedState, obj.properties);
+
+      arrayOfStates.push({ ...clonedState });
+    }
+
+    if (operation === 'removeProperties') {
+      for (const propKey of obj.properties) {
+        if (clonedState.hasOwnProperty(propKey)) {
+          delete clonedState[propKey];
+        }
+      }
+      arrayOfStates.push({ ...clonedState });
+    }
+
+    if (operation === 'clear') {
+      for (const key in clonedState) {
+        delete clonedState[key];
+      }
+      arrayOfStates.push({ ...clonedState });
+    }
+  }
+
+  return arrayOfStates;
 }
 
 module.exports = transformStateWithClones;
