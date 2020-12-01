@@ -83,7 +83,7 @@ function transformStateWithClones(state, transforms) {
     if (operation === 'removeProperties') {
       for (const propKey of obj.properties) {
         if (clonedState.hasOwnProperty(propKey)) {
-          delete clonedState.propKey;
+          delete clonedState[propKey];
         }
       }
       arrayOfStates.push({ ...clonedState });
@@ -93,7 +93,7 @@ function transformStateWithClones(state, transforms) {
       for (const key in clonedState) {
         delete clonedState[key];
       }
-      arrayOfStates.push(clonedState);
+      arrayOfStates.push({ ...clonedState });
     }
   }
 
